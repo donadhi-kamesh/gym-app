@@ -1,69 +1,149 @@
-import Image from "next/image";
+import Hero from '@/components/Hero';
+import { homeStatistics, clients, programs, testimonials } from '@/data/clients';
+import CTASection from '@/components/CTASection';
+import Footer from '@/components/Footer';
+import ProgramCard from '@/components/ProgramCard';
+import TestimonialCard from '@/components/TestimonialCard';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main>
+      {/* Hero Section */}
+      <Hero stats={homeStatistics} />
+
+      {/* Featured Transformations */}
+      <section className="py-20 bg-black/80 backdrop-blur-md border-t border-gray-800/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              Featured Transformations
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Real stories from real people who took control of their fitness journey
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {clients.slice(0, 3).map((client) => (
+              <Link
+                key={client.id}
+                href={`/transformations/${client.id}`}
+                className="group bg-gray-900/50 rounded-2xl border border-gray-800 overflow-hidden hover:border-green-400 transition-all duration-300 hover:shadow-xl hover:shadow-green-400/20"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  {client.photos[0] && (
+                    <img
+                      src={client.photos[0].url}
+                      alt={`${client.name} before`}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/40" />
+                  <div className="absolute top-4 right-4 bg-green-500/20 text-green-400 px-4 py-2 rounded-full font-bold text-sm">
+                    ✓ Verified
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {client.name}
+                  </h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-gray-400">{client.goal}</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-gray-800/50 p-3 rounded-lg">
+                      <p className="text-gray-400 text-xs font-bold">Before</p>
+                      <p className="text-2xl font-black text-white">
+                        {client.beforeWeight}kg
+                      </p>
+                    </div>
+                    <div className="bg-green-500/20 p-3 rounded-lg">
+                      <p className="text-gray-400 text-xs font-bold">After</p>
+                      <p className="text-2xl font-black text-green-400">
+                        {client.afterWeight}kg
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400 text-sm">
+                      {client.duration} months transformation
+                    </span>
+                    <ArrowRight
+                      size={20}
+                      className="text-green-400 group-hover:translate-x-2 transition-transform"
+                    />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/transformations"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              View All Transformations
+              <ArrowRight size={20} />
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Programs Section */}
+      <section className="py-20 bg-black/85 backdrop-blur-md border-t border-gray-800/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              Our Premium Programs
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Scientifically-designed programs tailored to your fitness goals
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {programs.map((program) => (
+              <ProgramCard key={program.id} program={program} />
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-black/80 backdrop-blur-md border-t border-gray-800/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              Client Testimonials
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              What our satisfied clients have to say
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard
+                key={testimonial.id}
+                testimonial={testimonial}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <CTASection />
+
+      {/* Footer */}
+      <Footer />
+    </main>
   );
 }
