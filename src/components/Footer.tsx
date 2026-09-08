@@ -1,134 +1,67 @@
 'use client';
 
 import Link from 'next/link';
-import { MessageCircle, Share2, Heart, Lock } from 'lucide-react';
+import { ArrowUpRight, Lock } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
 
 export default function Footer() {
   const { brand } = useSite();
-  const logoInitial = brand.brandName ? brand.brandName.charAt(0).toUpperCase() : 'T';
+
+  const links = [
+    { name: 'Clients', href: '/transformations' },
+    { name: 'Programs', href: '/programs' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+    { name: 'Start coaching', href: '/register' },
+  ];
 
   return (
-    <footer className="bg-black/90 backdrop-blur-md border-t border-gray-800/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          {/* Logo & About */}
-          <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg flex items-center justify-center">
-                <span className="text-black font-bold text-lg">{logoInitial}</span>
-              </div>
-              <span className="text-white font-bold text-xl">{brand.brandName}</span>
-            </div>
-            <p className="text-gray-400 text-sm">
-              {brand.tagline || 'Premium fitness transformations with verified results and expert coaching.'}
+    <footer className="border-t border-white/[0.08] bg-black/80 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-10">
+          <div className="max-w-xs">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="w-7 h-7 bg-[#f4f4f5] text-zinc-950 flex items-center justify-center rounded-[7px] text-[15px] font-extrabold leading-none">
+                {brand.brandName ? brand.brandName.charAt(0).toUpperCase() : 'T'}
+              </span>
+              <span className="text-white font-bold text-[15px]">{brand.brandName}</span>
+            </Link>
+            <p className="mt-4 text-sm text-zinc-500 leading-relaxed">
+              {brand.tagline || 'Online coaching for fat loss and muscle gain.'}
             </p>
+            <p className="mt-3 text-sm text-zinc-500">{brand.address}</p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-gray-400 text-sm font-medium">
-              <li>
-                <Link href="/" className="hover:text-green-400 transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/transformations" className="hover:text-green-400 transition-colors">
-                  Transformations
-                </Link>
-              </li>
-              <li>
-                <Link href="/programs" className="hover:text-green-400 transition-colors">
-                  Programs & Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-green-400 transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-green-400 transition-colors">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/register" className="hover:text-green-400 transition-colors font-bold text-green-400">
-                  Register Now
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <nav className="grid grid-cols-2 gap-x-14 gap-y-3 content-start">
+            {links.map((l) => (
+              <Link
+                key={l.name}
+                href={l.href}
+                className="group inline-flex items-center gap-1 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+              >
+                {l.name}
+                <ArrowUpRight size={13} className="opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500" />
+              </Link>
+            ))}
+          </nav>
 
-          {/* Contact Details */}
-          <div>
-            <h3 className="text-white font-bold mb-4">Contact</h3>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Phone: <span className="text-white font-bold">{brand.phone}</span></li>
-              <li>Email: <span className="text-white font-bold">{brand.email}</span></li>
-              <li>Location: <span className="text-white">{brand.address}</span></li>
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h3 className="text-white font-bold mb-4">Connect</h3>
-            <div className="flex gap-4 mb-6">
-              <a
-                href={brand.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-green-400 transition-colors"
-                title="Instagram"
-              >
-                <Share2 size={22} />
-              </a>
-              <a
-                href={`https://wa.me/${brand.whatsapp.replace(/\D/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-green-400 transition-colors"
-                title="WhatsApp"
-              >
-                <MessageCircle size={22} />
-              </a>
-              <a
-                href={brand.facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-green-400 transition-colors"
-                title="Facebook"
-              >
-                <Heart size={22} />
-              </a>
-            </div>
+          <div className="text-sm">
+            <p className="text-zinc-500">{brand.phone}</p>
+            <p className="mt-1.5 text-zinc-500">{brand.email}</p>
           </div>
         </div>
 
-        {/* Bottom Footer - Very discreet CMS link at the end */}
-        <div className="border-t border-gray-800/80 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} {brand.brandName}. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6 text-sm">
-              <Link href="/contact" className="text-gray-400 hover:text-green-400 transition-colors">
-                Support & Inquiries
-              </Link>
-              {/* Discrete low-visibility CMS access link for owner */}
-              <Link
-                href="/admin"
-                className="text-gray-600 hover:text-gray-400 transition-all opacity-40 hover:opacity-100 text-xs flex items-center gap-1"
-                title="Portal"
-              >
-                <Lock size={10} />
-                <span>Portal</span>
-              </Link>
-            </div>
-          </div>
+        <div className="mt-12 pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row justify-between gap-3">
+          <p className="text-[13px] text-zinc-600">
+            © {new Date().getFullYear()} {brand.brandName}. All rights reserved.
+          </p>
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-1 text-xs text-zinc-700 hover:text-zinc-500 transition-colors"
+            title="Portal"
+          >
+            <Lock size={10} /> Portal
+          </Link>
         </div>
       </div>
     </footer>

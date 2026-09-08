@@ -1,85 +1,76 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 export default function Hero() {
-  const { hero } = useSite();
+  const { hero, brand } = useSite();
   const stats = hero.stats || [];
 
   return (
-    <div className="relative w-full h-screen overflow-hidden pt-20">
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
-        {/* Main Headline */}
+    <div className="relative w-full min-h-svh flex flex-col">
+      <div className="relative z-10 flex-1 flex flex-col justify-end max-w-7xl mx-auto w-full px-4 sm:px-6 pt-44 pb-12">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          className="label"
+        >
+          <span className="idx">●</span> Online coaching — {brand.address}
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.08, ease: EASE }}
+          className="font-display uppercase text-white leading-[0.9] mt-5 max-w-5xl text-[15vw] sm:text-7xl md:text-8xl lg:text-[7.5rem] text-balance break-words"
+        >
+          {hero.title}
+        </motion.h1>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-6 max-w-4xl"
+          transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+          className="mt-7 flex flex-col md:flex-row md:items-end gap-7 md:gap-12"
         >
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-4 leading-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
-            {hero.title}
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          <p className="text-zinc-300 text-base md:text-lg leading-relaxed max-w-xl">
             {hero.subtitle}
           </p>
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 w-full sm:w-auto">
+            <a href="/register" className="btn-primary justify-center sm:justify-start">
+              {hero.primaryCtaText || 'Start coaching'}
+            </a>
+            <a href="/transformations" className="btn-quiet justify-center sm:justify-start">
+              {hero.secondaryCtaText || 'See client results'}
+            </a>
+          </div>
         </motion.div>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 mb-12 mt-6"
-        >
-          <Link
-            href="/register"
-            className="px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 text-lg shadow-xl shadow-green-500/25"
-          >
-            {hero.primaryCtaText || 'Start Transformation'}
-          </Link>
-          <Link
-            href="/transformations"
-            className="px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400/10 font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 text-lg bg-black/40 backdrop-blur-sm shadow-xl shadow-black/40"
-          >
-            {hero.secondaryCtaText || 'View Success Stories'}
-          </Link>
-        </motion.div>
-
-        {/* Statistics */}
         {stats.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="grid grid-cols-3 gap-8 mb-16 bg-black/60 backdrop-blur-md px-8 py-6 rounded-2xl border border-white/10 shadow-2xl"
+            className="mt-12 pt-7 border-t border-white/[0.12]"
           >
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500 mb-2">
-                  {stat.number}
+            <dl className="grid grid-cols-3 gap-4 sm:gap-6 max-w-2xl">
+              {stats.map((stat, i) => (
+                <div key={i} className="min-w-0">
+                  <dt className="order-2 mt-1.5 block text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500 leading-snug">
+                    {stat.label}
+                  </dt>
+                  <dd className="order-1 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white tnum truncate">
+                    {stat.number}
+                  </dd>
                 </div>
-                <div className="text-gray-300 text-sm md:text-base font-medium">{stat.label}</div>
-              </div>
-            ))}
+              ))}
+            </dl>
           </motion.div>
         )}
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-          <ChevronDown className="text-green-400" size={32} />
-        </motion.div>
-      </motion.div>
     </div>
   );
 }

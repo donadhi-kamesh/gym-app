@@ -1,104 +1,44 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X } from 'lucide-react';
 import { TransformationImage } from '@/types';
-
-interface ImageModalProps {
-  image: TransformationImage | null;
-  images: TransformationImage[];
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 export default function ImageModal({
   image,
   images,
   isOpen,
   onClose,
-}: ImageModalProps) {
+}: {
+  image: TransformationImage | null;
+  images: TransformationImage[];
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   if (!isOpen || !image) return null;
-
-  const currentIndex = images.findIndex((img) => img.id === image.id);
-
-  const goToPrevious = () => {
-    const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-    // This would need parent component state management
-  };
-
-  const goToNext = () => {
-    const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-    // This would need parent component state management
-  };
+  const idx = images.findIndex((img) => img.id === image.id);
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50" />
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/95 z-50"
-          />
-
-          {/* Modal Content */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
-            {/* Image Container */}
-            <div className="relative w-full h-full flex flex-col items-center justify-center">
-              <img
-                src={image.url}
-                alt={image.caption}
-                className="max-w-full max-h-full object-contain"
-              />
-
-              {/* Info at Bottom */}
-              {image.caption && (
-                <div className="absolute bottom-8 left-0 right-0 text-center bg-black/70 backdrop-blur-md py-4 rounded-lg mx-4">
-                  <p className="text-white font-bold text-lg">{image.caption}</p>
-                  {image.month && (
-                    <p className="text-gray-400 text-sm">Month {image.month}</p>
-                  )}
-                </div>
-              )}
-
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-300 z-10"
-              >
-                <X size={28} />
-              </button>
-
-              {/* Navigation */}
-              {images.length > 1 && (
-                <>
-                  <button
-                    onClick={goToPrevious}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-300"
-                  >
-                    <ChevronLeft size={32} />
-                  </button>
-                  <button
-                    onClick={goToNext}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-300"
-                  >
-                    <ChevronRight size={32} />
-                  </button>
-                </>
-              )}
-
-              {/* Image Counter */}
-              <div className="absolute bottom-8 right-4 bg-black/70 px-4 py-2 rounded-full text-white text-sm font-bold">
-                {currentIndex + 1} / {images.length}
+            <div className="pointer-events-auto relative w-full max-w-4xl overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
+              <img src={image.url} alt={image.caption} className="w-full max-h-[76vh] object-contain bg-black" />
+              <div className="flex items-center justify-between gap-4 px-5 py-3.5 border-t border-white/[0.08]">
+                <p className="text-sm font-medium text-zinc-200 truncate">{image.caption || 'Progress photo'}</p>
+                <span className="text-xs text-zinc-500 tnum shrink-0">{idx + 1} / {images.length}</span>
               </div>
+              <button onClick={onClose} aria-label="Close" className="absolute top-4 right-4 w-9 h-9 rounded-lg bg-black/70 border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-zinc-950 transition-colors">
+                <X size={17} />
+              </button>
             </div>
           </motion.div>
         </>

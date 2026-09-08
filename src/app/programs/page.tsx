@@ -5,173 +5,88 @@ import Footer from '@/components/Footer';
 import ProgramCard from '@/components/ProgramCard';
 import CTASection from '@/components/CTASection';
 import { useSite } from '@/context/SiteContext';
+import { Label, Reveal, SectionHead } from '@/components/ui';
+
+const FEATURES = [
+  { title: 'Training blocks', description: 'Periodised programs adjusted every week based on your logs.' },
+  { title: 'Nutrition targets', description: 'Calories and protein set for your goal, adapted to foods you eat.' },
+  { title: 'Form reviews', description: 'Send lifting videos. Get line-by-line feedback from your coach.' },
+  { title: 'Weekly check-ins', description: 'Weight, photos, adherence — reviewed together, every week.' },
+  { title: 'Direct access', description: 'Message your coach on WhatsApp when life gets in the way.' },
+  { title: 'Habit systems', description: 'Sleep, steps and routines tracked alongside training.' },
+];
+
+const FAQS = [
+  { q: 'How fast will I see changes?', a: 'Most clients notice visible differences in 4–6 weeks. Larger recompositions take 3–6 months of consistent work.' },
+  { q: 'I\u2019m a complete beginner. Is this for me?', a: 'Yes. Around half our clients start with no lifting experience. Your first block assumes zero baseline.' },
+  { q: 'Can I train at home?', a: 'Yes. Every program has gym and home variants, including minimal-equipment options.' },
+  { q: 'What does the nutrition side involve?', a: 'Calorie and protein targets plus a meal structure built from foods you already eat. No crash diets.' },
+  { q: 'What if I travel or miss a week?', a: 'Your coach rebuilds the week around it. Consistency over months matters more than any single week.' },
+  { q: 'Is there a guarantee?', a: 'A 30-day satisfaction guarantee from your start date. Details are shared before you pay anything.' },
+];
 
 export default function ProgramsPage() {
   const { programs } = useSite();
 
   return (
     <main>
-      {/* Header */}
-      <div className="bg-gradient-to-b from-green-900/20 to-black pt-32 pb-12 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-black text-white mb-4">
-              Our Premium Programs
+      <div className="pt-40 pb-12 border-b border-white/[0.08] bg-black/45 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <Label index="02">Coaching programs</Label>
+            <h1 className="mt-4 text-4xl md:text-6xl font-bold tracking-[-0.025em] text-white leading-[1.02] max-w-3xl text-balance">
+              Pick the goal. We\u2019ll build the plan.
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Scientifically-designed fitness programs tailored to your specific goals. Choose your path to transformation.
+            <p className="mt-4 text-zinc-400 max-w-xl leading-relaxed">
+              Fat loss, muscle gain or a full recomposition — each with training, nutrition and accountability included.
             </p>
           </motion.div>
         </div>
       </div>
 
-      {/* Programs Grid */}
-      <section className="py-20">
+      <section className="py-14 md:py-16 bg-[#0a0a0b]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {programs.map((program, index) => (
-              <motion.div
-                key={program.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {programs.map((program, i) => (
+              <Reveal key={program.id} delay={(i % 3) * 0.07}>
                 <ProgramCard program={program} />
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Program Details Section */}
-      <section className="py-20 border-t border-gray-800">
+      <section className="py-16 md:py-20 bg-black/55 backdrop-blur-xl border-t border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-black text-white mb-12 text-center">
-            What&apos;s Included in Every Program
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Expert Coaching',
-                description: 'Personalized guidance from certified fitness professionals',
-                icon: '💪',
-              },
-              {
-                title: 'Nutrition Plans',
-                description: 'Custom meal plans aligned with your fitness goals',
-                icon: '🥗',
-              },
-              {
-                title: 'Progress Tracking',
-                description: 'Real-time monitoring and adjustments to your program',
-                icon: '📊',
-              },
-              {
-                title: '24/7 Support',
-                description: 'Round-the-clock support via WhatsApp and email',
-                icon: '🤝',
-              },
-              {
-                title: 'Workout Plans',
-                description: 'Structured training programs updated weekly',
-                icon: '🏋️',
-              },
-              {
-                title: 'Community Access',
-                description: 'Join our exclusive community of transformers',
-                icon: '👥',
-              },
-              {
-                title: 'Supplement Guidance',
-                description: 'Evidence-based supplement recommendations',
-                icon: '💊',
-              },
-              {
-                title: 'Transformation Photos',
-                description: 'Professional photo documentation of your journey',
-                icon: '📸',
-              },
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 p-6 rounded-xl border border-gray-800 hover:border-green-400/50 transition-all duration-300"
-              >
-                <div className="text-4xl mb-3">{feature.icon}</div>
-                <h3 className="text-white font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-400 text-sm">{feature.description}</p>
-              </motion.div>
+          <SectionHead index="02a" label="Included" title="Everything in every plan." />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10">
+            {FEATURES.map((f, i) => (
+              <Reveal key={f.title} delay={(i % 3) * 0.06}>
+                <div className="py-5 border-t border-white/[0.08]">
+                  <p className="text-white font-semibold text-[15px]">{f.title}</p>
+                  <p className="mt-1 text-sm text-zinc-500 leading-relaxed">{f.description}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 border-t border-gray-800">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-4xl font-black text-white mb-12 text-center">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="space-y-6">
-            {[
-              {
-                q: 'How long does it take to see results?',
-                a: 'Most clients notice visible changes within 4-6 weeks. Significant transformations typically occur within 8-12 weeks of consistent effort.',
-              },
-              {
-                q: 'Do I need gym experience?',
-                a: 'No! Our programs are designed for all fitness levels, from complete beginners to advanced athletes.',
-              },
-              {
-                q: 'Can I do this from home?',
-                a: 'Absolutely. We offer both gym-based and home workout programs. Choose what works best for you.',
-              },
-              {
-                q: 'Is nutrition guidance included?',
-                a: 'Yes! Every program includes personalized nutrition plans tailored to your goals and preferences.',
-              },
-              {
-                q: 'What if I miss a workout?',
-                a: 'Our coaches adjust your program dynamically. We focus on consistency, not perfection.',
-              },
-              {
-                q: 'Do you offer refunds?',
-                a: 'We offer a 30-day satisfaction guarantee. If you\'re not happy, we\'ll refund your investment.',
-              },
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-gray-900/50 p-6 rounded-xl border border-gray-800 hover:border-green-400/50 transition-all duration-300"
-              >
-                <h3 className="text-white font-bold mb-2 flex items-center gap-3">
-                  <span className="text-green-400 text-lg">Q.</span>
-                  {faq.q}
-                </h3>
-                <p className="text-gray-400 ml-7">{faq.a}</p>
-              </motion.div>
+      <section className="py-16 md:py-20 bg-[#0a0a0b]/80 backdrop-blur-xl border-t border-white/[0.08]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <SectionHead index="02b" label="Questions" title="Asked often, answered honestly." />
+          <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            {FAQS.map((faq) => (
+              <div key={faq.q} className="py-5">
+                <h3 className="text-white font-semibold text-[15px]">{faq.q}</h3>
+                <p className="mt-1.5 text-sm text-zinc-400 leading-relaxed">{faq.a}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
       <CTASection />
-
-      {/* Footer */}
       <Footer />
     </main>
   );

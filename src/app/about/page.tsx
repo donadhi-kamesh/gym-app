@@ -4,159 +4,98 @@ import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import CTASection from '@/components/CTASection';
 import { useSite } from '@/context/SiteContext';
+import { Label, Reveal, SectionHead } from '@/components/ui';
 
 export default function AboutPage() {
   const { about, brand, hero } = useSite();
 
   return (
     <main>
-      {/* Header */}
-      <div className="bg-gradient-to-b from-green-900/20 to-black pt-32 pb-12 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-black text-white mb-4">
+      <div className="pt-40 pb-12 border-b border-white/[0.08] bg-black/45 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <Label index="03">About</Label>
+            <h1 className="mt-4 text-4xl md:text-6xl font-bold tracking-[-0.025em] text-white leading-[1.02] max-w-3xl text-balance">
               {about.title || `About ${brand.brandName}`}
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              {about.subtitle || 'We are dedicated to transforming lives through verified fitness coaching.'}
+            <p className="mt-4 text-zinc-400 max-w-xl leading-relaxed">
+              {about.subtitle || 'Coaching for people who want proof, not motivation quotes.'}
             </p>
           </motion.div>
         </div>
       </div>
 
-      {/* Mission Section */}
-      <section className="py-20 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl font-black text-white mb-6">Our Mission</h2>
-              <p className="text-gray-300 text-lg mb-6 leading-relaxed">
-                {about.mission}
+      <section className="py-16 md:py-20 bg-[#0a0a0b]/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-start">
+          <Reveal>
+            <Label index="03a">Why we exist</Label>
+            <p className="mt-4 text-xl md:text-2xl text-zinc-100 font-medium tracking-[-0.01em] leading-snug text-balance">
+              {about.mission}
+            </p>
+            <p className="mt-5 text-zinc-400 leading-relaxed">{about.story}</p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="card overflow-hidden">
+              <img src="/placeholders/image-2.svg" alt="Training" className="w-full h-80 object-cover" />
+              <p className="px-5 py-4 text-sm text-zinc-400 border-t border-white/[0.08]">
+                {about.vision || 'A coaching practice measured in kept promises.'}
               </p>
-              <h3 className="text-2xl font-bold text-white mb-4">Our Story</h3>
-              <p className="text-gray-400 text-base leading-relaxed">
-                {about.story}
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative h-96 rounded-2xl overflow-hidden border border-gray-800"
-            >
-              <img
-                src="/placeholders/image-2.svg"
-                alt="Mission"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-            </motion.div>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="py-20 border-b border-gray-800">
+      <section className="py-16 md:py-20 bg-black/55 backdrop-blur-xl border-t border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-black text-white mb-12 text-center">
-            Our Core Values
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {about.values.map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 p-8 rounded-2xl border border-green-500/30 text-center"
-              >
-                <div className="text-4xl mb-4 text-green-400 font-bold">0{index + 1}</div>
-                <h3 className="text-white font-bold text-xl mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 gap-6 text-center">
-            {hero.stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent mb-2">
-                  {stat.number}
+          <SectionHead index="03b" label="Principles" title="How we coach." />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10">
+            {about.values.map((value, i) => (
+              <Reveal key={i} delay={i * 0.07}>
+                <div className="py-6 border-t border-white/[0.08]">
+                  <p className="tnum text-[13px] font-semibold text-zinc-500">0{i + 1}</p>
+                  <h3 className="mt-2 text-white font-semibold">{value.title}</h3>
+                  <p className="mt-1.5 text-sm text-zinc-400 leading-relaxed">{value.description}</p>
                 </div>
-                <p className="text-gray-400 font-medium">{stat.label}</p>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 border-b border-gray-800">
+      <section className="py-14 bg-[#0a0a0b]/80 backdrop-blur-xl border-t border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 text-center">
-            Meet {brand.brandName}
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12 text-center">
-            The dedicated coaches behind your transformation
-          </p>
+          <dl className="grid grid-cols-3 gap-6 max-w-2xl">
+            {hero.stats.map((stat, i) => (
+              <div key={i}>
+                <dd className="text-3xl md:text-4xl font-bold tracking-tight text-white tnum">{stat.number}</dd>
+                <dt className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500">{stat.label}</dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {about.team.map((member, index) => (
-              <motion.div
-                key={member.id || index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gray-900/50 rounded-2xl border border-gray-800 overflow-hidden hover:border-green-400/50 transition-all duration-300"
-              >
-                <img
-                  src={member.photo}
-                  alt={member.name}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-white font-bold text-xl mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-green-400 font-bold text-sm mb-3">
-                    {member.role}
-                  </p>
-                  <p className="text-gray-400 text-sm leading-relaxed">{member.bio}</p>
+      <section className="py-16 md:py-20 bg-black/55 backdrop-blur-xl border-t border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHead index="03c" label="Coaches" title={`The people behind ${brand.brandName}.`} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {about.team.map((member, i) => (
+              <Reveal key={member.id || i} delay={(i % 3) * 0.07}>
+                <div className="card overflow-hidden">
+                  <img src={member.photo} alt={member.name} loading="lazy" className="w-full h-64 object-cover" />
+                  <div className="p-5 border-t border-white/[0.08]">
+                    <h3 className="text-white font-semibold">{member.name}</h3>
+                    <p className="text-[13px] text-zinc-500 mt-0.5">{member.role}</p>
+                    <p className="mt-2.5 text-sm text-zinc-400 leading-relaxed">{member.bio}</p>
+                  </div>
                 </div>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
       <CTASection />
-
-      {/* Footer */}
       <Footer />
     </main>
   );

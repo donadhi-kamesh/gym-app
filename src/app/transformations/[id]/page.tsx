@@ -23,17 +23,12 @@ export default function TransformationDetailPage() {
 
   if (!client) {
     return (
-      <div className="min-h-screen bg-black pt-32 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl font-black text-white mb-4">
-            Transformation Not Found
-          </h1>
-          <Link
-            href="/transformations"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-green-400 text-black font-bold rounded-lg hover:bg-green-500 transition-colors"
-          >
-            <ArrowLeft size={20} />
-            Back to Transformations
+      <div className="min-h-screen pt-40 px-4">
+        <div className="max-w-xl mx-auto card p-10 text-center">
+          <h1 className="text-2xl font-bold tracking-tight text-white">Client not found</h1>
+          <p className="mt-2 text-sm text-zinc-500">This page may have been moved or removed.</p>
+          <Link href="/transformations" className="btn-primary mt-6">
+            <ArrowLeft size={16} /> All clients
           </Link>
         </div>
       </div>
@@ -41,74 +36,50 @@ export default function TransformationDetailPage() {
   }
 
   const timelinePhases = [
-    { label: 'START', description: 'Day 1 Baseline', completed: true },
-    { label: 'MONTH 1', description: 'Initial Progress', completed: true },
-    { label: 'MONTH 2', description: 'Visible Body Recomp', completed: true },
-    { label: 'MONTH 3', description: 'Peak Conditioning', completed: true },
-    { label: 'TRANSFORMATION COMPLETE', description: 'Achieved Goal', completed: true },
+    { label: 'Start', description: 'Baseline measurements', completed: true },
+    { label: 'Month 1', description: 'Habits locked in', completed: true },
+    { label: 'Month 2', description: 'Visible recomposition', completed: true },
+    { label: 'Month 3', description: 'Peak conditioning', completed: true },
+    { label: 'Complete', description: 'Goal reached', completed: true },
   ];
-
-  const handleImageClick = (image: TransformationImage) => {
-    setSelectedImage(image);
-    setModalOpen(true);
-  };
 
   return (
     <main>
-      {/* Header */}
-      <div className="bg-gray-900/50 border-b border-gray-800 pt-32 pb-8">
+      <div className="border-b border-white/[0.08] bg-black/45 backdrop-blur-xl pt-36 md:pt-40 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/transformations"
-            className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 mb-6 transition-colors font-bold"
-          >
-            <ArrowLeft size={20} />
-            Back to Transformations
+          <Link href="/transformations" className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-white transition-colors">
+            <ArrowLeft size={15} /> All clients
           </Link>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-2">
-            {client.name}&apos;s Transformation
+          <h1 className="mt-4 text-4xl md:text-6xl font-bold tracking-[-0.025em] text-white leading-[1.02]">
+            {client.name}
           </h1>
-          <p className="text-gray-400">{client.goal}</p>
+          <p className="mt-3 text-zinc-400 text-[15px]">
+            {client.goal} · {client.duration} months · Verified
+          </p>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Image Carousel */}
-        {client.photos && client.photos.length > 0 && (
-          <div className="mb-12">
-            <ImageCarousel images={client.photos} onImageClick={handleImageClick} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-[#0a0a0b]/60">
+        {client.photos?.length > 0 && (
+          <div className="mb-10">
+            <ImageCarousel images={client.photos} onImageClick={(img) => { setSelectedImage(img); setModalOpen(true); }} />
           </div>
         )}
-
-        {/* Client Profile */}
-        <div className="mb-16">
-          <ClientProfile client={client} />
-        </div>
-
-        {/* Transformation Timeline */}
-        <div className="py-12 border-t border-gray-800">
+        <ClientProfile client={client} />
+        <div className="mt-10 pt-4 border-t border-white/[0.08]">
           <TransformationTimeline phases={timelinePhases} />
         </div>
       </div>
 
-      {/* CTA Section */}
       <CTASection
-        title="Ready for Your Own Transformation?"
-        description="Follow in the footsteps of our successful clients and start your fitness journey today."
+        title="Want a result like this?"
+        description="Same process: assessment, plan, weekly check-ins. Start with an application."
       />
 
-      {/* Image Modal */}
       {client.photos && (
-        <ImageModal
-          image={selectedImage}
-          images={client.photos}
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-        />
+        <ImageModal image={selectedImage} images={client.photos} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       )}
 
-      {/* Footer */}
       <Footer />
     </main>
   );

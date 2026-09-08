@@ -1,117 +1,125 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { brand, banner } = useSite();
+  const pathname = usePathname();
 
   const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Transformations', href: '/transformations' },
+    { name: 'Clients', href: '/transformations' },
     { name: 'Programs', href: '/programs' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
-    { name: 'Register', href: '/register' },
   ];
-
-  const logoInitial = brand.brandName ? brand.brandName.charAt(0).toUpperCase() : 'T';
 
   return (
     <div className="fixed top-0 w-full z-50">
-      {/* Dynamic Announcement Banner */}
       {banner.enabled && banner.text && (
-        <div className="bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-600 text-black font-extrabold text-xs py-1.5 px-4 text-center flex items-center justify-center gap-2 shadow-md">
-          <span>{banner.text}</span>
-          {banner.linkText && banner.linkUrl && (
-            <Link
-              href={banner.linkUrl}
-              className="underline hover:text-white transition-colors inline-flex items-center gap-0.5"
-            >
-              {banner.linkText} <ArrowRight size={12} />
-            </Link>
-          )}
+        <div className="bg-[#f4f4f5] text-zinc-900">
+          <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-center gap-2 text-[11px] font-semibold tracking-wide">
+            <span className="h-1.5 w-1.5 rounded-full bg-zinc-900 shrink-0" />
+            <span className="truncate">{banner.text}</span>
+            {banner.linkText && banner.linkUrl && (
+              <Link
+                href={banner.linkUrl}
+                className="hidden sm:inline-flex items-center gap-1 font-bold underline underline-offset-2 shrink-0"
+              >
+                {banner.linkText} <ArrowRight size={11} />
+              </Link>
+            )}
+          </div>
         </div>
       )}
 
-      <nav className="bg-black/95 backdrop-blur-md border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="border-b border-white/[0.08] bg-black/70 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-9 h-9 bg-gradient-to-br from-green-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-105 transition-transform">
-                <span className="text-black font-black text-xl">{logoInitial}</span>
-              </div>
-              <span className="text-white font-black text-xl tracking-tight hidden sm:inline">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="w-7 h-7 bg-[#f4f4f5] text-zinc-950 flex items-center justify-center rounded-[7px] text-[15px] font-extrabold leading-none">
+                {brand.brandName ? brand.brandName.charAt(0).toUpperCase() : 'T'}
+              </span>
+              <span className="text-white font-bold text-[15px] tracking-[-0.01em]">
                 {brand.brandName}
               </span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-300 hover:text-green-400 transition-colors duration-300 text-sm font-bold"
-                >
-                  {item.name}
-                </Link>
-              ))}
+            <div className="hidden md:flex items-center gap-7">
+              {navItems.map((item) => {
+                const active = pathname.startsWith(item.href);
+                return (
+                  <Link key={item.name} href={item.href} data-active={active} className="nav-link">
+                    {item.name}
+                  </Link>
+                );
+              })}
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden md:flex items-center">
+            <div className="hidden md:block">
               <Link
                 href="/register"
-                className="bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold px-5 py-2.5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/20 text-sm"
+                className="inline-flex items-center gap-1.5 bg-[#f4f4f5] hover:bg-[#d7f542] text-zinc-950 text-[13px] font-bold rounded-lg px-4 py-2.5 transition-colors"
               >
-                Start Transformation
+                Start coaching <ArrowRight size={14} />
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-white p-2"
+              className="md:hidden w-11 h-11 -mr-2 flex items-center justify-center text-zinc-200"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+              aria-expanded={isOpen}
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
 
-          {/* Mobile Navigation */}
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden pb-6 pt-2 border-t border-gray-800 space-y-2"
-            >
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block text-gray-300 hover:text-green-400 py-2 font-bold transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="pt-2">
-                <Link
-                  href="/register"
-                  className="block bg-gradient-to-r from-green-400 to-emerald-600 text-black font-extrabold px-4 py-3 rounded-xl text-center shadow-lg"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Start Transformation
-                </Link>
-              </div>
-            </motion.div>
-          )}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25 }}
+                className="md:hidden overflow-hidden"
+              >
+                <div className="py-3 border-t border-white/[0.08] space-y-0.5">
+                  <Link
+                    href="/"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-1 py-2.5 text-sm font-semibold text-zinc-300"
+                  >
+                    Home
+                  </Link>
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="block px-1 py-2.5 text-sm font-semibold text-zinc-300"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  <div className="pt-2 pb-1">
+                    <Link
+                      href="/register"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-center gap-1.5 bg-[#f4f4f5] text-zinc-950 text-sm font-bold rounded-lg px-4 py-3"
+                    >
+                      Start coaching <ArrowRight size={15} />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </nav>
     </div>

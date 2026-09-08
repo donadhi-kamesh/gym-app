@@ -1,130 +1,54 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { CheckCircle2 } from 'lucide-react';
+import { Label } from './ui';
 
-interface TimelinePhase {
+interface Phase {
   label: string;
   description?: string;
   completed: boolean;
 }
 
-interface TransformationTimelineProps {
-  phases: TimelinePhase[];
-}
-
-export default function TransformationTimeline({
-  phases,
-}: TransformationTimelineProps) {
+export default function TransformationTimeline({ phases }: { phases: Phase[] }) {
   return (
-    <div className="w-full py-12">
-      <h3 className="text-3xl font-bold text-white mb-12 text-center">
-        TRANSFORMATION TIMELINE
-      </h3>
+    <div className="w-full py-8">
+      <Label index="TL">Timeline</Label>
+      <h3 className="mt-3 text-xl font-bold tracking-tight text-white">How the result was built.</h3>
 
-      {/* Desktop Timeline */}
-      <div className="hidden md:flex justify-between items-center mb-12">
-        {phases.map((phase, index) => (
+      <div className="mt-8 hidden md:grid grid-cols-5 relative">
+        <div className="absolute top-[17px] left-[10%] right-[10%] h-px bg-white/10" />
+        {phases.map((phase, i) => (
           <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="flex-1 flex flex-col items-center"
+            key={i}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.07 }}
+            className="relative flex flex-col items-center text-center px-3"
           >
-            {/* Circle */}
-            <motion.div
-              whileHover={{ scale: 1.2 }}
-              className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-all duration-300 ${
-                phase.completed
-                  ? 'bg-gradient-to-br from-green-400 to-emerald-600'
-                  : 'bg-gray-700 border-2 border-gray-600'
-              }`}
-            >
-              {phase.completed ? (
-                <CheckCircle2 size={32} className="text-white" />
-              ) : (
-                <div className="w-6 h-6 bg-gray-600 rounded-full" />
-              )}
-            </motion.div>
-
-            {/* Label */}
-            <p
-              className={`text-center font-bold ${
-                phase.completed ? 'text-green-400' : 'text-gray-400'
-              }`}
-            >
-              {phase.label}
-            </p>
-
-            {/* Description */}
-            {phase.description && (
-              <p className="text-gray-500 text-sm mt-2 text-center max-w-[120px]">
-                {phase.description}
-              </p>
-            )}
-
-            {/* Connector Line */}
-            {index < phases.length - 1 && (
-              <div className="absolute left-1/2 top-8 w-[calc(100%+2rem)] h-1 -ml-4">
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: phase.completed ? 1 : 0 }}
-                  transition={{ delay: index * 0.2 + 0.5 }}
-                  className="w-full h-full bg-gradient-to-r from-green-400 to-emerald-600 origin-left"
-                />
-              </div>
-            )}
+            <span className={`relative z-10 w-[35px] h-[35px] rounded-full border flex items-center justify-center text-[13px] font-bold tnum ${phase.completed ? 'bg-white border-white text-zinc-950' : 'border-white/15 text-zinc-600'}`}>
+              {i + 1}
+            </span>
+            <p className="mt-3 text-[13px] font-semibold text-zinc-200">{phase.label}</p>
+            {phase.description && <p className="mt-1 text-xs text-zinc-500">{phase.description}</p>}
           </motion.div>
         ))}
       </div>
 
-      {/* Mobile Timeline */}
-      <div className="md:hidden space-y-6">
-        {phases.map((phase, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="flex gap-4"
-          >
-            {/* Timeline Circle */}
+      <div className="mt-6 md:hidden">
+        {phases.map((phase, i) => (
+          <div key={i} className="flex gap-4">
             <div className="flex flex-col items-center">
-              <motion.div
-                className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-                  phase.completed
-                    ? 'bg-gradient-to-br from-green-400 to-emerald-600'
-                    : 'bg-gray-700 border-2 border-gray-600'
-                }`}
-              >
-                {phase.completed ? (
-                  <CheckCircle2 size={24} className="text-white" />
-                ) : (
-                  <div className="w-4 h-4 bg-gray-600 rounded-full" />
-                )}
-              </motion.div>
-
-              {/* Vertical Line */}
-              {index < phases.length - 1 && (
-                <div className="w-1 h-12 bg-gray-700 mt-2" />
-              )}
+              <span className={`w-8 h-8 rounded-full border flex items-center justify-center text-xs font-bold tnum shrink-0 ${phase.completed ? 'bg-white border-white text-zinc-950' : 'border-white/15 text-zinc-600'}`}>
+                {i + 1}
+              </span>
+              {i < phases.length - 1 && <span className="w-px flex-1 min-h-8 bg-white/10" />}
             </div>
-
-            {/* Content */}
-            <div className="pb-6">
-              <p
-                className={`font-bold text-lg ${
-                  phase.completed ? 'text-green-400' : 'text-gray-400'
-                }`}
-              >
-                {phase.label}
-              </p>
-              {phase.description && (
-                <p className="text-gray-500 text-sm mt-1">{phase.description}</p>
-              )}
+            <div className="pb-6 pt-1">
+              <p className="text-sm font-semibold text-zinc-200">{phase.label}</p>
+              {phase.description && <p className="text-xs text-zinc-500 mt-0.5">{phase.description}</p>}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>

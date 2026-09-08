@@ -3,254 +3,109 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
-import { MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
+import { Label, Reveal } from '@/components/ui';
 
 export default function ContactPage() {
   const { brand } = useSite();
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    goal: 'weight-loss',
-    message: '',
-  });
-
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', goal: 'weight-loss', message: '' });
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    setSent(true);
+    setTimeout(() => setSent(false), 4000);
     setFormData({ name: '', email: '', phone: '', goal: 'weight-loss', message: '' });
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const channels = [
+    { title: 'WhatsApp', line: 'Fastest — usually same day', href: `https://wa.me/${brand.whatsapp.replace(/\D/g, '')}` },
+    { title: 'Phone', line: `${brand.phone} · Mon–Sat, 9–6`, href: `tel:${brand.phone}` },
+    { title: 'Email', line: brand.email, href: `mailto:${brand.email}` },
+  ];
+
+  const labelCls = 'block text-[12px] font-semibold text-zinc-400 mb-2';
+
   return (
     <main>
-      {/* Header */}
-      <div className="bg-gradient-to-b from-green-900/20 to-black pt-32 pb-12 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-black text-white mb-4">
-              Get in Touch
+      <div className="pt-40 pb-12 border-b border-white/[0.08] bg-black/45 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <Label index="04">Contact</Label>
+            <h1 className="mt-4 text-4xl md:text-6xl font-bold tracking-[-0.025em] text-white leading-[1.02]">
+              Ask us anything.
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Ready to start your transformation with {brand.brandName}? Let&apos;s talk about your fitness goals.
+            <p className="mt-4 text-zinc-400 max-w-xl leading-relaxed">
+              Considering {brand.brandName}? Write in — a coach replies, not a bot.
             </p>
           </motion.div>
         </div>
       </div>
 
-      {/* Contact Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              <h2 className="text-3xl font-black text-white mb-8">
-                Contact Information
-              </h2>
+      <section className="py-14 md:py-16 bg-[#0a0a0b]/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12">
+          <Reveal>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Direct lines</p>
+            <div className="mt-2 divide-y divide-white/[0.08] border-b border-white/[0.08]">
+              {channels.map((c) => (
+                <a key={c.title} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="group flex items-center justify-between py-4 gap-4">
+                  <div>
+                    <p className="text-white font-semibold text-[15px]">{c.title}</p>
+                    <p className="text-sm text-zinc-500 mt-0.5">{c.line}</p>
+                  </div>
+                  <ArrowRight size={15} className="text-zinc-600 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0" />
+                </a>
+              ))}
+            </div>
+            <p className="mt-6 text-sm text-zinc-500">{brand.address} · Online coaching worldwide</p>
+          </Reveal>
 
-              {/* WhatsApp */}
-              <a
-                href={`https://wa.me/${brand.whatsapp.replace(/\D/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-green-400 transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-400/30">
-                  <MessageCircle className="text-green-400" size={24} />
+          <Reveal delay={0.08}>
+            <form onSubmit={handleSubmit} className="card p-6 md:p-8 space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className={labelCls}>Name *</label>
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} required className="field" placeholder="Your name" />
                 </div>
                 <div>
-                  <p className="text-white font-bold mb-1">WhatsApp</p>
-                  <p className="text-gray-400 text-sm">{brand.phone}</p>
-                  <p className="text-gray-500 text-xs mt-2">Quick responses</p>
-                </div>
-              </a>
-
-              {/* Phone */}
-              <a
-                href={`tel:${brand.phone}`}
-                className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-green-400 transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-400/30">
-                  <Phone className="text-green-400" size={24} />
-                </div>
-                <div>
-                  <p className="text-white font-bold mb-1">Call Us</p>
-                  <p className="text-gray-400 text-sm">{brand.phone}</p>
-                  <p className="text-gray-500 text-xs mt-2">Mon-Sat, 9AM-6PM</p>
-                </div>
-              </a>
-
-              {/* Email */}
-              <a
-                href={`mailto:${brand.email}`}
-                className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-green-400 transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-400/30">
-                  <Mail className="text-green-400" size={24} />
-                </div>
-                <div>
-                  <p className="text-white font-bold mb-1">Email</p>
-                  <p className="text-gray-400 text-sm">{brand.email}</p>
-                  <p className="text-gray-500 text-xs mt-2">24-hour response</p>
-                </div>
-              </a>
-
-              {/* Location */}
-              <div className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800">
-                <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="text-green-400" size={24} />
-                </div>
-                <div>
-                  <p className="text-white font-bold mb-1">Location</p>
-                  <p className="text-gray-400 text-sm">{brand.address}</p>
-                  <p className="text-gray-500 text-xs mt-2">Online 1-on-1 Coaching</p>
+                  <label className={labelCls}>Email *</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} required className="field" placeholder="your@email.com" />
                 </div>
               </div>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2"
-            >
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Name */}
-                  <div>
-                    <label className="block text-white font-bold mb-3">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-400 transition-colors"
-                      placeholder="Your name"
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <label className="block text-white font-bold mb-3">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-400 transition-colors"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Phone */}
-                  <div>
-                    <label className="block text-white font-bold mb-3">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-400 transition-colors"
-                      placeholder="+91 91773 85668"
-                    />
-                  </div>
-
-                  {/* Goal */}
-                  <div>
-                    <label className="block text-white font-bold mb-3">
-                      Fitness Goal *
-                    </label>
-                    <select
-                      name="goal"
-                      value={formData.goal}
-                      onChange={handleChange}
-                      className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400 transition-colors"
-                    >
-                      <option value="weight-loss">Weight Loss</option>
-                      <option value="muscle-gain">Muscle Gain</option>
-                      <option value="strength">Strength Training</option>
-                      <option value="transformation">Body Transformation</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Message */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-white font-bold mb-3">
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={5}
-                    className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-400 transition-colors resize-none"
-                    placeholder="Tell us about your fitness journey and goals..."
-                  />
+                  <label className={labelCls}>Phone</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="field" placeholder="+91" />
                 </div>
-
-                {/* Submit Button */}
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold py-4 rounded-lg transition-all duration-300"
-                >
-                  Send Message
-                </motion.button>
-
-                {/* Success Message */}
-                {submitted && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="bg-green-500/20 border border-green-400 text-green-400 p-4 rounded-lg text-center font-bold"
-                  >
-                    Thank you! We&apos;ll be in touch soon.
-                  </motion.div>
-                )}
-              </form>
-            </motion.div>
-          </div>
+                <div>
+                  <label className={labelCls}>Goal *</label>
+                  <select name="goal" value={formData.goal} onChange={handleChange} className="field">
+                    <option value="weight-loss">Lose fat</option>
+                    <option value="muscle-gain">Build muscle</option>
+                    <option value="strength">Get stronger</option>
+                    <option value="transformation">Full recomposition</option>
+                    <option value="other">Something else</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>Message</label>
+                <textarea name="message" value={formData.message} onChange={handleChange} rows={5} className="field resize-none" placeholder="Training history, schedule, what you've tried…" />
+              </div>
+              <button type="submit" className="btn-primary w-full">
+                {sent ? 'Message sent — we\u2019ll reply soon' : 'Send message'}
+              </button>
+            </form>
+          </Reveal>
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </main>
   );

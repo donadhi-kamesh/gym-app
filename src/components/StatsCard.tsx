@@ -1,44 +1,24 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 interface StatsCardProps {
   label: string;
   value: string | number;
   unit?: string;
   highlight?: boolean;
-  color?: 'green' | 'orange' | 'white';
 }
 
-export default function StatsCard({
-  label,
-  value,
-  unit,
-  highlight = false,
-  color = 'white',
-}: StatsCardProps) {
-  const colorClasses = {
-    green: 'text-green-400',
-    orange: 'text-orange-400',
-    white: 'text-white',
-  };
-
+export default function StatsCard({ label, value, unit, highlight = false }: StatsCardProps) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className={`p-6 rounded-2xl border transition-all duration-300 ${
-        highlight
-          ? 'bg-gradient-to-br from-green-500/20 to-emerald-600/20 border-green-400/50'
-          : 'bg-gray-900/50 border-gray-800'
+    <div
+      className={`rounded-[14px] border p-5 transition-colors ${
+        highlight ? 'border-white/25 bg-white/[0.04]' : 'border-white/[0.09] bg-black/40'
       }`}
     >
-      <p className="text-gray-400 text-sm font-medium mb-2">{label}</p>
-      <div className="flex items-baseline gap-2">
-        <p className={`text-3xl md:text-4xl font-black ${colorClasses[color]}`}>
-          {value}
-        </p>
-        {unit && <p className="text-gray-400 text-sm">{unit}</p>}
-      </div>
-    </motion.div>
+      <p className="text-zinc-500 text-[11px] font-semibold uppercase tracking-[0.14em]">{label}</p>
+      <p className="mt-1.5 text-[1.7rem] font-bold tracking-tight text-white tnum leading-none">
+        {value}
+        {unit && <span className="ml-1 text-sm font-semibold text-zinc-500">{unit}</span>}
+      </p>
+    </div>
   );
 }

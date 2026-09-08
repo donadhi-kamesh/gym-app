@@ -129,7 +129,7 @@ export default function AdminDashboard() {
   // Login View
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen flex flex-col justify-between pt-24 pb-12">
+      <main className="min-h-screen flex flex-col justify-between pt-32 pb-12">
         <div className="flex-1 flex items-center justify-center px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -230,7 +230,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <main className="min-h-screen pt-24 pb-20">
+    <main className="min-h-screen pt-32 pb-20">
       {/* Toast Notification */}
       <AnimatePresence>
         {notification && (
@@ -238,7 +238,7 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed top-20 right-8 z-50 bg-green-500 text-black font-bold px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3"
+            className="fixed top-28 left-4 right-4 sm:left-auto sm:right-8 z-50 bg-green-500 text-black font-bold px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3"
           >
             <CheckCircle size={20} />
             {notification}
@@ -285,9 +285,9 @@ export default function AdminDashboard() {
       {/* Main Layout: Sidebar & Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Navigation */}
-          <div className="lg:col-span-1 space-y-2 bg-gray-900/50 p-4 rounded-2xl border border-gray-800 h-fit">
-            <p className="text-gray-500 text-xs font-bold uppercase tracking-wider px-3 mb-2">Navigation</p>
+          {/* Sidebar Navigation — horizontal chips on mobile, rail on desktop */}
+          <div className="lg:col-span-1 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible bg-gray-900/50 p-3 lg:p-4 rounded-2xl border border-gray-800 lg:h-fit lg:space-y-2">
+            <p className="hidden lg:block text-gray-500 text-xs font-bold uppercase tracking-wider px-3 mb-2">Navigation</p>
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -295,7 +295,7 @@ export default function AdminDashboard() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all ${
+                  className={`shrink-0 lg:w-full flex items-center justify-between px-4 py-3 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
                     isActive
                       ? 'bg-gradient-to-r from-green-400 to-emerald-600 text-black shadow-lg shadow-green-500/20'
                       : 'text-gray-400 hover:text-white hover:bg-gray-800/60'
@@ -621,7 +621,7 @@ export default function AdminDashboard() {
             {/* PROGRAMS TAB */}
             {activeTab === 'programs' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                   <h3 className="text-2xl font-black text-white">Programs & Packages</h3>
                   <button
                     onClick={() => {
@@ -689,8 +689,8 @@ export default function AdminDashboard() {
 
                 {/* Add/Edit Program Modal */}
                 {showProgramModal && (
-                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 max-w-lg w-full space-y-4">
+                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-5 sm:p-6 max-w-lg w-full space-y-4 my-auto max-h-[92dvh] overflow-y-auto">
                       <h4 className="text-xl font-bold text-white">
                         {editingProgramId ? 'Edit Program' : 'Create New Program'}
                       </h4>
@@ -790,7 +790,7 @@ export default function AdminDashboard() {
             {/* TRANSFORMATIONS TAB */}
             {activeTab === 'transformations' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                   <h3 className="text-2xl font-black text-white">Client Transformation Stories</h3>
                   <button
                     onClick={() => {
@@ -877,7 +877,7 @@ export default function AdminDashboard() {
                 {/* Transformation Modal */}
                 {showTransformModal && (
                   <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 max-w-lg w-full space-y-4 my-8">
+                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-5 sm:p-6 max-w-lg w-full space-y-4 my-auto max-h-[92dvh] overflow-y-auto">
                       <h4 className="text-xl font-bold text-white">
                         {editingTransformId ? 'Edit Transformation' : 'New Transformation Story'}
                       </h4>
@@ -1018,7 +1018,7 @@ export default function AdminDashboard() {
             {/* TESTIMONIALS TAB */}
             {activeTab === 'testimonials' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                   <h3 className="text-2xl font-black text-white">Client Testimonials</h3>
                   <button
                     onClick={() => {
@@ -1079,8 +1079,8 @@ export default function AdminDashboard() {
 
                 {/* Testimonial Modal */}
                 {showTestimonialModal && (
-                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 max-w-lg w-full space-y-4">
+                  <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-5 sm:p-6 max-w-lg w-full space-y-4 my-auto max-h-[92dvh] overflow-y-auto">
                       <h4 className="text-xl font-bold text-white">
                         {editingTestimonialId ? 'Edit Testimonial' : 'Add Testimonial'}
                       </h4>
@@ -1263,7 +1263,7 @@ export default function AdminDashboard() {
                         className="bg-gray-900/60 border border-gray-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-green-500/40 transition-all"
                       >
                         <div className="space-y-2 flex-1">
-                          <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
                             <h4 className="text-xl font-bold text-white">{reg.name}</h4>
                             <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold border border-green-500/30">
                               {reg.package}

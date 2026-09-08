@@ -8,147 +8,113 @@ import TestimonialCard from '@/components/TestimonialCard';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
+import { Reveal, SectionHead } from '@/components/ui';
+
+function ClientCard({ client, index }: { client: any; index: number }) {
+  const delta = client.beforeWeight - client.afterWeight;
+  return (
+    <Reveal delay={(index % 3) * 0.08}>
+      <Link href={`/transformations/${client.id}`} className="card group block overflow-hidden">
+        <div className="relative h-72 overflow-hidden">
+          {client.photos[0] && (
+            <img
+              src={client.photos[0].url}
+              alt={`${client.name} — before and after`}
+              loading="lazy"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+          )}
+          <div className="absolute inset-0 img-fade" />
+          <div className="absolute top-4 left-4 flex items-center gap-2">
+            {client.verified && (
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-black/65 backdrop-blur px-2.5 py-1 text-[11px] font-semibold text-zinc-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#d7f542]" /> Verified
+              </span>
+            )}
+          </div>
+          <div className="absolute bottom-4 left-5 right-5">
+            <p className="text-white font-bold text-lg leading-tight">{client.name}</p>
+            <p className="mt-0.5 text-[13px] text-zinc-400">
+              {client.goal} · {client.duration} months
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-t border-white/[0.08]">
+          <p className="text-sm tnum text-zinc-400 min-w-0">
+            <span className="text-zinc-200 font-semibold">{client.beforeWeight}kg</span>
+            <span className="mx-2 text-zinc-600">→</span>
+            <span className="text-white font-semibold">{client.afterWeight}kg</span>
+            <span className="ml-2 text-[12px] text-zinc-500">−{delta}kg</span>
+          </p>
+          <ArrowRight size={16} className="text-zinc-500 group-hover:text-white group-hover:translate-x-1 transition-all" />
+        </div>
+      </Link>
+    </Reveal>
+  );
+}
 
 export default function Home() {
   const { clients, programs, testimonials } = useSite();
 
   return (
     <main>
-      {/* Hero Section */}
       <Hero />
 
-      {/* Featured Transformations */}
-      <section className="py-20 bg-black/80 backdrop-blur-md border-t border-gray-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Featured Transformations
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Real stories from real people who took control of their fitness journey
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {clients.slice(0, 3).map((client) => (
-              <Link
-                key={client.id}
-                href={`/transformations/${client.id}`}
-                className="group bg-gray-900/50 rounded-2xl border border-gray-800 overflow-hidden hover:border-green-400 transition-all duration-300 hover:shadow-xl hover:shadow-green-400/20"
-              >
-                <div className="relative h-64 overflow-hidden">
-                  {client.photos[0] && (
-                    <img
-                      src={client.photos[0].url}
-                      alt={`${client.name} before`}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-black/40" />
-                  {client.verified && (
-                    <div className="absolute top-4 right-4 bg-green-500/20 text-green-400 px-4 py-2 rounded-full font-bold text-sm border border-green-500/30">
-                      ✓ Verified
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {client.name}
-                  </h3>
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="text-gray-400">{client.goal}</p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-gray-800/50 p-3 rounded-lg">
-                      <p className="text-gray-400 text-xs font-bold">Before</p>
-                      <p className="text-2xl font-black text-white">
-                        {client.beforeWeight}kg
-                      </p>
-                    </div>
-                    <div className="bg-green-500/20 p-3 rounded-lg">
-                      <p className="text-gray-400 text-xs font-bold">After</p>
-                      <p className="text-2xl font-black text-green-400">
-                        {client.afterWeight}kg
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400 text-sm">
-                      {client.duration} months transformation
-                    </span>
-                    <ArrowRight
-                      size={20}
-                      className="text-green-400 group-hover:translate-x-2 transition-transform"
-                    />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link
-              href="/transformations"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl shadow-green-500/20"
-            >
-              View All Transformations
-              <ArrowRight size={20} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Programs Section */}
-      <section className="py-20 bg-black/85 backdrop-blur-md border-t border-gray-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Our Premium Programs
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Scientifically-designed programs tailored to your fitness goals
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {programs.map((program) => (
-              <ProgramCard key={program.id} program={program} />
+      {/* 01 — Clients */}
+      <section className="bg-[#0a0a0b]/85 backdrop-blur-xl border-t border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+          <SectionHead
+            index="01"
+            label="Client results"
+            title="Documented transformations, not stock photos."
+            copy="Every client below trained under us and agreed to share their numbers."
+            link={{ href: '/transformations', text: 'View all clients' }}
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {clients.slice(0, 3).map((client, i) => (
+              <ClientCard key={client.id} client={client} index={i} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-black/80 backdrop-blur-md border-t border-gray-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Client Testimonials
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              What our satisfied clients have to say
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <TestimonialCard
-                key={testimonial.id}
-                testimonial={testimonial}
-                index={index}
-              />
+      {/* 02 — Programs */}
+      <section className="bg-black/55 backdrop-blur-xl border-t border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+          <SectionHead
+            index="02"
+            label="Coaching"
+            title="One coach, one plan, weekly check-ins."
+            copy="Training and nutrition built around your schedule, equipment and food habits."
+            link={{ href: '/programs', text: 'Compare programs' }}
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {programs.map((program, i) => (
+              <Reveal key={program.id} delay={(i % 3) * 0.08}>
+                <ProgramCard program={program} />
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* 03 — Notes */}
+      <section className="bg-[#0a0a0b]/85 backdrop-blur-xl border-t border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24">
+          <SectionHead
+            index="03"
+            label="Client notes"
+            title="What it's like to work with us."
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {testimonials.map((t, i) => (
+              <TestimonialCard key={t.id} testimonial={t} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CTASection />
-
-      {/* Footer */}
       <Footer />
     </main>
   );

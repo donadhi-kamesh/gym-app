@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anton, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ReactNode } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Anton({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: "400",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sans = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Team Dinesh - Fitness Transformations",
-  description: "Premium fitness transformations with verified results and expert coaching by Team Dinesh",
+  title: "Team Dinesh — Elite Fitness Transformations",
+  description:
+    "Verified body transformations, elite coaching, nutrition and strength programs by Team Dinesh.",
 };
 
 import { SiteProvider } from "@/context/SiteContext";
@@ -25,11 +27,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col relative text-white bg-black">
+      <body className="min-h-full flex flex-col relative text-zinc-100 bg-[#060607]">
         <SiteProvider>
-          {/* Full-screen Background Image (100% width x 100% height, cover, centered) */}
+          {/* Full-screen Background Image (100% width x 100% height, cover, centered) — DO NOT CHANGE */}
           <div
             className="fixed inset-0 w-full h-full -z-20 pointer-events-none bg-cover bg-no-repeat"
             style={{
@@ -40,13 +42,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             }}
             aria-hidden="true"
           />
-          {/* Subtle dark overlay for optimal text contrast while keeping image sharp and clear */}
+          {/* Cinematic overlay: keeps image visible while guaranteeing text contrast */}
           <div
-            className="fixed inset-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-b from-black/55 via-black/30 to-black/65"
+            className="fixed inset-0 w-full h-full -z-10 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.38) 38%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.82) 100%)",
+            }}
             aria-hidden="true"
           />
           <Navbar />
-          {children}
+          <div className="flex-1">{children}</div>
         </SiteProvider>
       </body>
     </html>
