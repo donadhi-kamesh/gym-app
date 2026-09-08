@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "Premium fitness transformations with verified results and expert coaching by Team Dinesh",
 };
 
+import { SiteProvider } from "@/context/SiteContext";
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
@@ -26,24 +28,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col relative text-white bg-black">
-        {/* Full-screen Background Image (100% width x 100% height, cover, centered) */}
-        <div
-          className="fixed inset-0 w-full h-full -z-20 pointer-events-none bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: "url('/background.jpg')",
-            backgroundPosition: "center center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-          }}
-          aria-hidden="true"
-        />
-        {/* Subtle dark overlay for optimal text contrast while keeping image sharp and clear */}
-        <div
-          className="fixed inset-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-b from-black/55 via-black/30 to-black/65"
-          aria-hidden="true"
-        />
-        <Navbar />
-        {children}
+        <SiteProvider>
+          {/* Full-screen Background Image (100% width x 100% height, cover, centered) */}
+          <div
+            className="fixed inset-0 w-full h-full -z-20 pointer-events-none bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: "url('/background.jpg')",
+              backgroundPosition: "center center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+            aria-hidden="true"
+          />
+          {/* Subtle dark overlay for optimal text contrast while keeping image sharp and clear */}
+          <div
+            className="fixed inset-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-b from-black/55 via-black/30 to-black/65"
+            aria-hidden="true"
+          />
+          <Navbar />
+          {children}
+        </SiteProvider>
       </body>
     </html>
   );

@@ -1,12 +1,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { programs } from '@/data/clients';
 import Footer from '@/components/Footer';
 import ProgramCard from '@/components/ProgramCard';
 import CTASection from '@/components/CTASection';
+import { useSite } from '@/context/SiteContext';
 
 export default function ProgramsPage() {
+  const { programs } = useSite();
+
   return (
     <main>
       {/* Header */}
@@ -50,7 +52,7 @@ export default function ProgramsPage() {
       <section className="py-20 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-black text-white mb-12 text-center">
-            What's Included in Every Program
+            What&apos;s Included in Every Program
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

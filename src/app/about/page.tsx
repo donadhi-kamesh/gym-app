@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import CTASection from '@/components/CTASection';
+import { useSite } from '@/context/SiteContext';
 
 export default function AboutPage() {
+  const { about, brand, hero } = useSite();
+
   return (
     <main>
       {/* Header */}
@@ -16,10 +19,10 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-6xl font-black text-white mb-4">
-               About Team Dinesh
+              {about.title || `About ${brand.brandName}`}
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              We're dedicated to transforming lives through verified fitness coaching and proven methodologies.
+              {about.subtitle || 'We are dedicated to transforming lives through verified fitness coaching.'}
             </p>
           </motion.div>
         </div>
@@ -35,21 +38,19 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <h2 className="text-4xl font-black text-white mb-6">Our Mission</h2>
-              <p className="text-gray-400 text-lg mb-4 leading-relaxed">
-                We believe that every person deserves access to world-class fitness coaching and accountability. Our mission is to make real, verifiable transformations accessible to everyone.
+              <p className="text-gray-300 text-lg mb-6 leading-relaxed">
+                {about.mission}
               </p>
-              <p className="text-gray-400 text-lg mb-4 leading-relaxed">
-                By combining expert coaching, proven methodologies, and verified results, we've created a platform where dreams become reality. We don't just promise transformations—we document, verify, and celebrate them.
-              </p>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                Your success is our success. We're invested in your journey and committed to helping you become the best version of yourself.
+              <h3 className="text-2xl font-bold text-white mb-4">Our Story</h3>
+              <p className="text-gray-400 text-base leading-relaxed">
+                {about.story}
               </p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative h-96 rounded-2xl overflow-hidden"
+              className="relative h-96 rounded-2xl overflow-hidden border border-gray-800"
             >
               <img
                 src="/placeholders/image-2.svg"
@@ -69,42 +70,21 @@ export default function AboutPage() {
             Our Core Values
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Verified Results',
-                description: 'Every transformation is documented and verified. Authenticity is non-negotiable.',
-                icon: '✓',
-              },
-              {
-                title: 'Expert Coaching',
-                description: 'Our coaches are certified professionals with years of real-world experience.',
-                icon: '👨‍🏫',
-              },
-              {
-                title: 'Accountability',
-                description: 'We keep you accountable to your goals through continuous tracking and support.',
-                icon: '📊',
-              },
-              {
-                title: 'Community',
-                description: 'You\'re not alone. Join a supportive community of transformers.',
-                icon: '🤝',
-              },
-            ].map((value, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {about.values.map((value, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 p-8 rounded-xl border border-green-500/30 text-center"
+                className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 p-8 rounded-2xl border border-green-500/30 text-center"
               >
-                <div className="text-5xl mb-4">{value.icon}</div>
-                <h3 className="text-white font-bold text-lg mb-2">
+                <div className="text-4xl mb-4 text-green-400 font-bold">0{index + 1}</div>
+                <h3 className="text-white font-bold text-xl mb-3">
                   {value.title}
                 </h3>
-                <p className="text-gray-400">{value.description}</p>
+                <p className="text-gray-300 text-sm leading-relaxed">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -114,13 +94,8 @@ export default function AboutPage() {
       {/* Stats Section */}
       <section className="py-20 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { number: '500+', label: 'Transformations' },
-              { number: '10K+', label: 'Progress Photos' },
-              { number: '95%', label: 'Satisfaction Rate' },
-              { number: '50+', label: 'Expert Coaches' },
-            ].map((stat, index) => (
+          <div className="grid grid-cols-3 gap-6 text-center">
+            {hero.stats.map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -131,7 +106,7 @@ export default function AboutPage() {
                 <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
-                <p className="text-gray-400">{stat.label}</p>
+                <p className="text-gray-400 font-medium">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -142,48 +117,16 @@ export default function AboutPage() {
       <section className="py-20 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4 text-center">
-            Meet Team Dinesh
+            Meet {brand.brandName}
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12 text-center">
-            The coaches behind your transformation
+            The dedicated coaches behind your transformation
           </p>
 
-          {/* Team Group Photo */}
-          <div className="mb-16 rounded-2xl overflow-hidden border border-gray-800">
-            <img
-              src="/placeholders/image-3.svg"
-              alt="Team Dinesh"
-              className="w-full h-[400px] md:h-[500px] object-cover"
-            />
-            <div className="bg-gradient-to-r from-green-900/30 to-black p-6 text-center">
-              <p className="text-white font-bold text-xl">Team Dinesh</p>
-              <p className="text-gray-400">Your Transformation Partners</p>
-            </div>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Coach Dinesh',
-                role: 'Founder & Head Coach',
-                image: '/placeholders/image-4.svg',
-                bio: '10+ years of fitness coaching experience with 500+ successful transformations.',
-              },
-              {
-                name: 'Coach Priya',
-                role: 'Nutrition Specialist',
-                image: '/placeholders/image-5.svg',
-                bio: 'Certified nutritionist helping clients build sustainable eating habits.',
-              },
-              {
-                name: 'Coach Arjun',
-                role: 'Performance Coach',
-                image: '/placeholders/image-6.svg',
-                bio: 'Specializes in strength training and athletic performance optimization.',
-              },
-            ].map((member, index) => (
+            {about.team.map((member, index) => (
               <motion.div
-                key={index}
+                key={member.id || index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
@@ -191,18 +134,18 @@ export default function AboutPage() {
                 className="bg-gray-900/50 rounded-2xl border border-gray-800 overflow-hidden hover:border-green-400/50 transition-all duration-300"
               >
                 <img
-                  src={member.image}
+                  src={member.photo}
                   alt={member.name}
                   className="w-full h-64 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="text-white font-bold text-lg mb-1">
+                  <h3 className="text-white font-bold text-xl mb-1">
                     {member.name}
                   </h3>
                   <p className="text-green-400 font-bold text-sm mb-3">
                     {member.role}
                   </p>
-                  <p className="text-gray-400 text-sm">{member.bio}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{member.bio}</p>
                 </div>
               </motion.div>
             ))}

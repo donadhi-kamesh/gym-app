@@ -61,4 +61,56 @@ export interface Registration {
   package: string;
   foundVia: string;
   submittedAt: string;
+  status?: 'New' | 'Contacted' | 'Enrolled' | 'Archived';
 }
+
+export interface BrandSettings {
+  brandName: string;
+  tagline: string;
+  phone: string;
+  whatsapp: string;
+  email: string;
+  address: string;
+  instagramUrl: string;
+  youtubeUrl: string;
+  facebookUrl: string;
+}
+
+export interface HeroStatistic {
+  number: string;
+  label: string;
+}
+
+export interface HeroSettings {
+  title: string;
+  subtitle: string;
+  primaryCtaText: string;
+  secondaryCtaText: string;
+  stats: HeroStatistic[];
+}
+
+export interface BannerSettings {
+  enabled: boolean;
+  text: string;
+  linkText?: string;
+  linkUrl?: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  photo: string;
+}
+
+export interface AboutSettings {
+  title: string;
+  subtitle: string;
+  story: string;
+  mission: string;
+  vision: string;
+  values: { title: string; description: string }[];
+  team: TeamMember[];
+}
+

@@ -4,21 +4,17 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import Footer from '@/components/Footer';
+import { useSite } from '@/context/SiteContext';
 
 interface FormData {
-  // Step 1
   name: string;
   age: string;
   gender: string;
   mobileNumber: string;
-  
-  // Step 2
   height: string;
   weight: string;
   experienceLevel: string;
   fitnessGoal: string;
-  
-  // Step 3
   dietPreference: string;
   profession: string;
   commitmentLevel: string;
@@ -35,6 +31,7 @@ const steps = [
 ];
 
 export default function RegistrationPage() {
+  const { brand, addRegistration } = useSite();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -77,18 +74,11 @@ export default function RegistrationPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newRegistration = {
-      id: Date.now().toString(),
-      ...formData,
-      submittedAt: new Date().toISOString(),
-    };
-
-    const existing = localStorage.getItem('registrations');
-    const registrations = existing ? JSON.parse(existing) : [];
-    localStorage.setItem('registrations', JSON.stringify([newRegistration, ...registrations]));
+    // Save lead into CMS store
+    addRegistration(formData);
 
     const message = `
-Hello Team Dinesh! 🏋️
+Hello ${brand.brandName}! 🏋️
 
 I've completed my fitness assessment and would like to start my transformation journey!
 
@@ -115,7 +105,7 @@ Found via: ${formData.foundVia}
 Looking forward to my transformation! 💪
     `.trim();
 
-    const whatsappNumber = '919177385668';
+    const whatsappNumber = brand.whatsapp.replace(/\D/g, '') || '919177385668';
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
 
@@ -141,7 +131,7 @@ Looking forward to my transformation! 💪
               Start Your Transformation 💪
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Join Team Dinesh and get your personalized fitness program
+              Join {brand.brandName} and get your personalized fitness program
             </p>
           </motion.div>
 
@@ -159,7 +149,7 @@ Looking forward to my transformation! 💪
                   <motion.div
                     className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 mb-3 ${
                       index <= currentStep
-                        ? 'bg-gradient-to-r from-green-400 to-emerald-600 text-black'
+                        ? 'bg-gradient-to-r from-green-400 to-emerald-600 text-black font-extrabold'
                         : 'bg-gray-800 text-gray-400'
                     }`}
                   >
@@ -525,7 +515,7 @@ Looking forward to my transformation! 💪
                     type="button"
                     onClick={handleNext}
                     whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-bold rounded-lg transition-all"
+                    className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold rounded-lg transition-all"
                   >
                     Next
                     <ChevronRight size={20} />
@@ -536,7 +526,7 @@ Looking forward to my transformation! 💪
                   <motion.button
                     type="submit"
                     whileHover={{ scale: 1.05 }}
-                    className="px-8 py-3 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-bold rounded-lg transition-all"
+                    className="px-8 py-3 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold rounded-lg transition-all"
                   >
                     Submit & Open WhatsApp
                   </motion.button>

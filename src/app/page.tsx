@@ -1,17 +1,21 @@
+'use client';
+
 import Hero from '@/components/Hero';
-import { homeStatistics, clients, programs, testimonials } from '@/data/clients';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
 import ProgramCard from '@/components/ProgramCard';
 import TestimonialCard from '@/components/TestimonialCard';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useSite } from '@/context/SiteContext';
 
 export default function Home() {
+  const { clients, programs, testimonials } = useSite();
+
   return (
     <main>
       {/* Hero Section */}
-      <Hero stats={homeStatistics} />
+      <Hero />
 
       {/* Featured Transformations */}
       <section className="py-20 bg-black/80 backdrop-blur-md border-t border-gray-800/80">
@@ -41,9 +45,11 @@ export default function Home() {
                     />
                   )}
                   <div className="absolute inset-0 bg-black/40" />
-                  <div className="absolute top-4 right-4 bg-green-500/20 text-green-400 px-4 py-2 rounded-full font-bold text-sm">
-                    ✓ Verified
-                  </div>
+                  {client.verified && (
+                    <div className="absolute top-4 right-4 bg-green-500/20 text-green-400 px-4 py-2 rounded-full font-bold text-sm border border-green-500/30">
+                      ✓ Verified
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-6">
@@ -86,7 +92,7 @@ export default function Home() {
           <div className="text-center">
             <Link
               href="/transformations"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl shadow-green-500/20"
             >
               View All Transformations
               <ArrowRight size={20} />

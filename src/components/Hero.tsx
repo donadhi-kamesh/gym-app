@@ -3,16 +3,14 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
+import { useSite } from '@/context/SiteContext';
 
-interface HeroProps {
-  stats?: Array<{ number: string; label: string }>;
-}
+export default function Hero() {
+  const { hero } = useSite();
+  const stats = hero.stats || [];
 
-export default function Hero({ stats = [] }: HeroProps) {
   return (
-    <div className="relative w-full h-screen overflow-hidden pt-16">
-
-
+    <div className="relative w-full h-screen overflow-hidden pt-20">
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
         {/* Main Headline */}
@@ -20,13 +18,13 @@ export default function Hero({ stats = [] }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-6"
+          className="mb-6 max-w-4xl"
         >
           <h1 className="text-5xl md:text-7xl font-black text-white mb-4 leading-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
-            Real People.<br />Real Transformations.
+            {hero.title}
           </h1>
           <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            Track verified fitness transformations with premium coaching and personalized programs.
+            {hero.subtitle}
           </p>
         </motion.div>
 
@@ -35,19 +33,19 @@ export default function Hero({ stats = [] }: HeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 mb-12 mt-8"
+          className="flex flex-col sm:flex-row gap-4 mb-12 mt-6"
         >
           <Link
             href="/register"
-            className="px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 text-lg shadow-lg shadow-green-500/25"
+            className="px-8 py-4 bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 text-lg shadow-xl shadow-green-500/25"
           >
-            Start Your Transformation
+            {hero.primaryCtaText || 'Start Transformation'}
           </Link>
           <Link
             href="/transformations"
-            className="px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400/10 font-bold rounded-lg transition-all duration-300 transform hover:scale-105 text-lg bg-black/40 backdrop-blur-sm shadow-lg shadow-black/40"
+            className="px-8 py-4 border-2 border-green-400 text-green-400 hover:bg-green-400/10 font-extrabold rounded-xl transition-all duration-300 transform hover:scale-105 text-lg bg-black/40 backdrop-blur-sm shadow-xl shadow-black/40"
           >
-            View Transformations
+            {hero.secondaryCtaText || 'View Success Stories'}
           </Link>
         </motion.div>
 
@@ -57,7 +55,7 @@ export default function Hero({ stats = [] }: HeroProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="grid grid-cols-3 gap-8 mb-16 bg-black/50 backdrop-blur-md px-8 py-6 rounded-2xl border border-white/10 shadow-2xl"
+            className="grid grid-cols-3 gap-8 mb-16 bg-black/60 backdrop-blur-md px-8 py-6 rounded-2xl border border-white/10 shadow-2xl"
           >
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
@@ -78,10 +76,7 @@ export default function Hero({ stats = [] }: HeroProps) {
         transition={{ duration: 1, delay: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
+        <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
           <ChevronDown className="text-green-400" size={32} />
         </motion.div>
       </motion.div>

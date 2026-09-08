@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import { MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { useSite } from '@/context/SiteContext';
 
 export default function ContactPage() {
+  const { brand } = useSite();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,10 +21,8 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would send to a backend
-    console.log('Form submitted:', formData);
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setTimeout(() => setSubmitted(false), 4000);
     setFormData({ name: '', email: '', phone: '', goal: 'weight-loss', message: '' });
   };
 
@@ -48,7 +49,7 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Ready to start your transformation? Let's talk about your fitness goals.
+              Ready to start your transformation with {brand.brandName}? Let&apos;s talk about your fitness goals.
             </p>
           </motion.div>
         </div>
@@ -71,7 +72,7 @@ export default function ContactPage() {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/9177385668"
+                href={`https://wa.me/${brand.whatsapp.replace(/\D/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-green-400 transition-all duration-300 group"
@@ -81,14 +82,14 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-white font-bold mb-1">WhatsApp</p>
-                  <p className="text-gray-400 text-sm">+91 9177385668</p>
+                  <p className="text-gray-400 text-sm">{brand.phone}</p>
                   <p className="text-gray-500 text-xs mt-2">Quick responses</p>
                 </div>
               </a>
 
               {/* Phone */}
               <a
-                href="tel:+919177385668"
+                href={`tel:${brand.phone}`}
                 className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-green-400 transition-all duration-300 group"
               >
                 <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-400/30">
@@ -96,14 +97,14 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-white font-bold mb-1">Call Us</p>
-                  <p className="text-gray-400 text-sm">+91 9177385668</p>
-                  <p className="text-gray-500 text-xs mt-2">Mon-Sat, 9AM-6PM</p> 
+                  <p className="text-gray-400 text-sm">{brand.phone}</p>
+                  <p className="text-gray-500 text-xs mt-2">Mon-Sat, 9AM-6PM</p>
                 </div>
               </a>
 
               {/* Email */}
               <a
-                 href="mailto:info@teamdinesh.com"
+                href={`mailto:${brand.email}`}
                 className="flex items-start gap-4 p-6 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-green-400 transition-all duration-300 group"
               >
                 <div className="w-12 h-12 bg-green-400/20 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-green-400/30">
@@ -111,7 +112,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-white font-bold mb-1">Email</p>
-                  <p className="text-gray-400 text-sm">info@teamdinesh.com</p>
+                  <p className="text-gray-400 text-sm">{brand.email}</p>
                   <p className="text-gray-500 text-xs mt-2">24-hour response</p>
                 </div>
               </a>
@@ -123,8 +124,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-white font-bold mb-1">Location</p>
-                  <p className="text-gray-400 text-sm">Kuppam, India</p>
-                  <p className="text-gray-500 text-xs mt-2">Also available online</p>
+                  <p className="text-gray-400 text-sm">{brand.address}</p>
+                  <p className="text-gray-500 text-xs mt-2">Online 1-on-1 Coaching</p>
                 </div>
               </div>
             </motion.div>
@@ -183,7 +184,7 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full bg-gray-900/50 border border-gray-800 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-400 transition-colors"
-                      placeholder="+91 9999 999 999"
+                      placeholder="+91 91773 85668"
                     />
                   </div>
 
@@ -227,7 +228,7 @@ export default function ContactPage() {
                   type="submit"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-full bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-bold py-4 rounded-lg transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 text-black font-extrabold py-4 rounded-lg transition-all duration-300"
                 >
                   Send Message
                 </motion.button>
@@ -240,49 +241,11 @@ export default function ContactPage() {
                     exit={{ opacity: 0, y: -10 }}
                     className="bg-green-500/20 border border-green-400 text-green-400 p-4 rounded-lg text-center font-bold"
                   >
-                    Thank you! We'll be in touch soon.
+                    Thank you! We&apos;ll be in touch soon.
                   </motion.div>
                 )}
               </form>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-20 border-t border-gray-800">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-4xl font-black text-white mb-12 text-center">
-            Common Questions
-          </h2>
-
-          <div className="space-y-6">
-            {[
-              {
-                q: 'How quickly will you respond?',
-                a: 'We aim to respond to all inquiries within 24 hours. For urgent matters, WhatsApp us for immediate assistance.',
-              },
-              {
-                q: 'Do you offer free consultations?',
-                a: 'Yes! We offer a free 30-minute consultation to discuss your goals and find the perfect program for you.',
-              },
-              {
-                q: 'What is the next step?',
-                a: 'Fill out the contact form or message us directly. We\'ll schedule a consultation to understand your needs and create a personalized plan.',
-              },
-            ].map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-gray-900/50 p-6 rounded-xl border border-gray-800"
-              >
-                <h3 className="text-white font-bold mb-2">{faq.q}</h3>
-                <p className="text-gray-400">{faq.a}</p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
